@@ -1,0 +1,163 @@
+.container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-direction: column;
+}
+
+.header {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.dashHeader {
+    color: white;
+    margin-top: 50px;
+    text-decoration-line: underline;
+}
+
+#selectPage {
+    margin-top: 50px;
+    text-decoration-line: underline;
+}
+
+#homeNavbar {
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background-color: rgb(255, 166, 0);
+    height: 200px;
+}
+
+.navBar {
+    background-color: black;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-around;
+}
+
+.navButtons {
+    background: none;
+    border: none;
+    color: white;
+    padding: 14px 20px;
+    cursor: pointer;
+}
+
+.navButtons:hover {
+    background-color: gray;
+}
+
+.homeButtons {
+    font-size: xx-large;
+    color: white;
+    background-color: rgb(255, 166, 0);
+    height: 200px;
+    width: 200px;
+    cursor: pointer;
+}
+
+.buttons {
+    border: 2px solid;
+    border-radius: 10px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.buttons:hover {
+    border-color: white;
+}
+
+.buttons:active, .navButtons:active {
+    transform: scale(0.9);
+}
+
+#leftButton {
+    border: 2px solid transparent;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#middleButton {
+    border: 2px solid transparent;
+}
+
+#rightButton {
+    border: 2px solid transparent;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#leftButton:hover, #middleButton:hover, #rightButton:hover {
+    border-color: white;
+}
+
+#leftButton:active, #middleButton:active, #rightButton:active {
+    transform: scale(0.9);
+}
+
+.userInput {
+    margin-top: 50px;
+    border-radius: 10px;
+}
+
+.dropbutton {
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    flex-direction: column;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.margin {
+    margin-top: 50px;
+}
+
+.column {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px;
+    flex-direction: column;
+}
+
+.dashboard {
+    height: 300px;
+    border: 2px solid white;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding: 20px;
+    overflow: scroll;
+}
+
+.info {
+    color: white;
+    margin-right: 50px;
+}
+
+.text {
+    color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+}
