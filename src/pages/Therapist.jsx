@@ -5,6 +5,7 @@ import axios from "axios";
 
 const Therapist = () => {
     const navigate = useNavigate();
+    const VITE_URL = import.meta.env.VITE_API_URL;
 
     const [therapistName, setTherapistName] = useState("");
     const [newName, setNewName] = useState("");
@@ -178,9 +179,10 @@ const Therapist = () => {
     }
 
     const getAllTherapists = async () => {
+        console.log(VITE_URL);
         try {
             setError(null);
-            const response = await axios.get("http://localhost:5000/therapists");
+            const response = await axios.get(`${VITE_URL}/therapists`);
             setAllData(response.data);
         } catch (err) {
             console.error("Error fetching therapists:", err);
@@ -194,7 +196,7 @@ const Therapist = () => {
 
         try {
             setError(null);
-            const response = await axios.get(`http://localhost:5000/therapists/name/${encodeURIComponent(therapistName)}`);
+            const response = await axios.get(`${VITE_URL}/therapists/name/${encodeURIComponent(therapistName)}`);
             console.log(response.data);
             setTherapistData(response.data);
         } catch (err) {
@@ -209,7 +211,7 @@ const Therapist = () => {
 
         try {
             setError(null);
-            const response = await axios.post("http://localhost:5000/therapists", {
+            const response = await axios.post(`${VITE_URL}/therapists`, {
                 Name: newName,
                 Title: newTitle,
                 Email: newEmail,
@@ -229,7 +231,7 @@ const Therapist = () => {
     
         try {
             setError(null);
-            const response = await axios.delete(`http://localhost:5000/therapists/name/${encodeURIComponent(therapistData.Name)}`);
+            const response = await axios.delete(`${VITE_URL}/therapists/name/${encodeURIComponent(therapistData.Name)}`);
             console.log(response.data);
             setSuccessMessage(response.data.message);
         } catch (err) {
@@ -247,7 +249,7 @@ const Therapist = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/therapists/name/${encodeURIComponent(therapistData.Name)}`, { newName }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/therapists/name/${encodeURIComponent(therapistData.Name)}`, { newName }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -261,7 +263,7 @@ const Therapist = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/therapists/title/${encodeURIComponent(therapistData.Name)}`, { newTitle }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/therapists/title/${encodeURIComponent(therapistData.Name)}`, { newTitle }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -275,7 +277,7 @@ const Therapist = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/therapists/email/${encodeURIComponent(therapistData.Name)}`, { newEmail }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/therapists/email/${encodeURIComponent(therapistData.Name)}`, { newEmail }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -289,7 +291,7 @@ const Therapist = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/therapists/location/${encodeURIComponent(therapistData.Name)}`, { newLocation }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/therapists/location/${encodeURIComponent(therapistData.Name)}`, { newLocation }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -303,7 +305,7 @@ const Therapist = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/therapists/years/${encodeURIComponent(therapistData.Name)}`, { newYears }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/therapists/years/${encodeURIComponent(therapistData.Name)}`, { newYears }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -317,7 +319,7 @@ const Therapist = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/therapists/avail/${encodeURIComponent(therapistData.Name)}`, { newAvail }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/therapists/avail/${encodeURIComponent(therapistData.Name)}`, { newAvail }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");

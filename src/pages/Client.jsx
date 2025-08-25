@@ -5,6 +5,7 @@ import axios from "axios";
 
 const Client = () => {
     const navigate = useNavigate();
+    const VITE_URL = import.meta.env.VITE_API_URL;
 
     const [clientName, setClientName] = useState("");
     const [newName, setNewName] = useState("");
@@ -146,7 +147,7 @@ const Client = () => {
     const getAllClients = async () => {
         try {
             setError(null);
-            const response = await axios.get("http://localhost:5000/clients");
+            const response = await axios.get(`${VITE_URL}/clients`);
             setAllData(response.data);
         } catch (err) {
             console.error("Error fetching clients:", err);
@@ -160,7 +161,7 @@ const Client = () => {
 
         try {
             setError(null);
-            const response = await axios.get(`http://localhost:5000/clients/name/${encodeURIComponent(clientName)}`);
+            const response = await axios.get(`${VITE_URL}/clients/name/${encodeURIComponent(clientName)}`);
             console.log(response.data);
             setClientData(response.data);
         } catch (err) {
@@ -175,7 +176,7 @@ const Client = () => {
 
         try {
             setError(null);
-            const response = await axios.post("http://localhost:5000/clients", {
+            const response = await axios.post(`${VITE_URL}/clients`, {
                 Name: newName,
                 Email: newEmail,
                 PhoneNumber: newNumber,
@@ -195,7 +196,7 @@ const Client = () => {
 
         try {
             setError(null);
-            const response = await axios.delete(`http://localhost:5000/clients/name/${encodeURIComponent(clientData.Name)}`);
+            const response = await axios.delete(`${VITE_URL}/clients/name/${encodeURIComponent(clientData.Name)}`);
             console.log(response.data);
             setSuccessMessage(response.data.message);
             setClientData(null);
@@ -212,7 +213,7 @@ const Client = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/clients/name/${encodeURIComponent(clientData.Name)}`, { newName }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/clients/name/${encodeURIComponent(clientData.Name)}`, { newName }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -226,7 +227,7 @@ const Client = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/clients/email/${encodeURIComponent(clientData.Name)}`, { newEmail }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/clients/email/${encodeURIComponent(clientData.Name)}`, { newEmail }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -240,7 +241,7 @@ const Client = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/clients/number/${encodeURIComponent(clientData.Name)}`, { newNumber }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/clients/number/${encodeURIComponent(clientData.Name)}`, { newNumber }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -254,7 +255,7 @@ const Client = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/clients/reg/${encodeURIComponent(clientData.Name)}`, { newReg }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/clients/reg/${encodeURIComponent(clientData.Name)}`, { newReg }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");

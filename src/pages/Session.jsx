@@ -5,6 +5,7 @@ import axios from "axios";
 
 const Session = () => {
     const navigate = useNavigate();
+    const VITE_URL = import.meta.env.VITE_API_URL;
 
     const [therapistName, setTherapistName] = useState("");
     const [newTherapist, setNewTherapist] = useState("");
@@ -154,7 +155,7 @@ const Session = () => {
     const getAllSessions = async () => {
         try {
             setError(null);
-            const response = await axios.get("http://localhost:5000/sessions");
+            const response = await axios.get(`${VITE_URL}/sessions`);
             setAllData(response.data);
         } catch (err) {
             console.error("Error fetching sessions:", err);
@@ -168,7 +169,7 @@ const Session = () => {
 
         try {
             setError(null);
-            const response = await axios.get(`http://localhost:5000/sessions/therapist/${encodeURIComponent(therapistName)}`);
+            const response = await axios.get(`${VITE_URL}/sessions/therapist/${encodeURIComponent(therapistName)}`);
             console.log(response.data);
             setSessionData(response.data);
         } catch (err) {
@@ -188,7 +189,7 @@ const Session = () => {
 
         try {
             setError(null);
-            const response = await axios.post("http://localhost:5000/sessions", {
+            const response = await axios.post(`${VITE_URL}/sessions`, {
                 Therapist: newTherapist,
                 Client: newClient,
                 Notes: newNotes,
@@ -207,7 +208,7 @@ const Session = () => {
 
         try {
             setError(null);
-            const response = await axios.delete(`http://localhost:5000/sessions/therapist/${encodeURIComponent(sessionData.Therapist)}`);
+            const response = await axios.delete(`${VITE_URL}/sessions/therapist/${encodeURIComponent(sessionData.Therapist)}`);
             console.log(response.data);
             setSuccessMessage(response.data.message);
         } catch (err) {
@@ -225,7 +226,7 @@ const Session = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/sessions/therapist/${encodeURIComponent(sessionData.Therapist)}`, { newTherapist }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/sessions/therapist/${encodeURIComponent(sessionData.Therapist)}`, { newTherapist }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -239,7 +240,7 @@ const Session = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/sessions/client/${encodeURIComponent(sessionData.Client)}`, { newClient }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/sessions/client/${encodeURIComponent(sessionData.Client)}`, { newClient }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -253,7 +254,7 @@ const Session = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/sessions/notes/${encodeURIComponent(sessionData.Notes)}`, { newNotes }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/sessions/notes/${encodeURIComponent(sessionData.Notes)}`, { newNotes }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -267,7 +268,7 @@ const Session = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/sessions/date/${encodeURIComponent(sessionData.SessionDate)}`, { newDate }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/sessions/date/${encodeURIComponent(sessionData.SessionDate)}`, { newDate }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -281,7 +282,7 @@ const Session = () => {
 
         try {
             setError(null);
-            const response = await axios.patch(`http://localhost:5000/sessions/len/${encodeURIComponent(sessionData.Length)}`, { newLength }, { headers: { "Content-Type": "application/json" } });
+            const response = await axios.patch(`${VITE_URL}/sessions/len/${encodeURIComponent(sessionData.Length)}`, { newLength }, { headers: { "Content-Type": "application/json" } });
             setSuccessMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
