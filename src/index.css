@@ -5,7 +5,7 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: white;
+  background-color:#011a2e;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,8 +23,8 @@ a:hover {
 }
 
 body {
-  margin: 0;
   display: flex;
+  margin: 0;
   /* place-items: center; */
   min-width: 320px;
   min-height: 100vh;
@@ -47,11 +47,16 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #023973
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+input:focus {
+  outline: none;
+  border-color: #111822;
 }
 
 @media (prefers-color-scheme: light) {

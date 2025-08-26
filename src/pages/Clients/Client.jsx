@@ -1,8 +1,8 @@
-import './Styles.css';
+import '../Styles.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavBar from '../Components/NavBar';
+import NavBar from '../../Components/NavBar';
 
 const Client = () => {
     const navigate = useNavigate();
@@ -444,11 +444,11 @@ const Client = () => {
                     </div>
 
                     <div className='column'>
-                        <h2 style={{ color: "white" }}>Regularity</h2>
+                        <h2 className='info'>Regularity</h2>
                         {Array.isArray(allData) && allData.length > 0 ? (
                             allData.map((client, index) => (
                                 <div key={index} className='column'>
-                                    <p style={{ color: "white" }}>{client.Regularity}</p>
+                                    <p className='info'>{client.Regularity}</p>
                                 </div>
                             ))
                         ) : (

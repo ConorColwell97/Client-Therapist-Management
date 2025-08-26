@@ -1,8 +1,8 @@
-import './Styles.css';
+import '../Styles.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import NavBar from '../Components/NavBar';
+import NavBar from '../../Components/NavBar';
 
 const Session = () => {
     const navigate = useNavigate();

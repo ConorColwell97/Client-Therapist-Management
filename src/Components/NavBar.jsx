@@ -6,9 +6,10 @@ const NavBar = () => {
 
     return (
         <nav className='navBar'>
-            <button className='navButtons' onClick={() => navigate("/Therapist")}>Therapist</button>
-            <button className='navButtons' onClick={() => navigate("/Client")}>Client</button>
-            <button className='navButtons' onClick={() => navigate("/Session")}>Session</button>
+            <button className='navButtons' onClick={() => navigate("/")}>Home</button>
+            <button className='navButtons' onClick={() => navigate("/Therapist")}>Therapists</button>
+            <button className='navButtons' onClick={() => navigate("/Client")}>Clients</button>
+            <button className='navButtons' onClick={() => navigate("/Session")}>Sessions</button>
         </nav>
     );
 }
