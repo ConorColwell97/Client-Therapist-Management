@@ -1,9 +1,9 @@
 .container {
     display: flex;
-    justify-content: center;
+    flex: 1;
     margin-bottom: 20px;
     flex-direction: column;
-    align-items: center;
+    margin-top: 10%;
 }
 
 .navContainer {
@@ -14,13 +14,11 @@
 }
 
 .header {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: white;
-    margin-bottom: 50px;
+    color: #242424;
 }
 
 .dashHeader {
-    color: white;
+    color: #242424;
     margin-top: 50px;
     text-decoration-line: underline;
 }
@@ -33,33 +31,33 @@
 #homeNavbar {
     border: 2px solid transparent;
     border-radius: 10px;
-    background-color: rgb(255, 166, 0);
+    background-color: #242424;
     height: 200px;
 }
 
 .navBar {
-    background-color: black;
-    overflow: hidden;
+    background-color: #3882F6;
     display: flex;
     justify-content: space-around;
+    border-radius: 2rem;
 }
 
 .navButtons {
     background: none;
     border: none;
     color: white;
-    padding: 14px 20px;
+    padding: 1rem;
     cursor: pointer;
 }
 
 .navButtons:hover {
-    background-color: gray;
+    opacity: 0.7;
 }
 
 .homeButtons {
     font-size: xx-large;
     color: white;
-    background-color: rgb(255, 166, 0);
+    background-color: #242424;
     height: 200px;
     width: 200px;
     cursor: pointer;
@@ -78,30 +76,6 @@
 }
 
 .buttons:active, .navButtons:active {
-    transform: scale(0.9);
-}
-
-#leftButton {
-    border: 2px solid transparent;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-}
-
-#middleButton {
-    border: 2px solid transparent;
-}
-
-#rightButton {
-    border: 2px solid transparent;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-}
-
-#leftButton:hover, #middleButton:hover, #rightButton:hover {
-    border-color: white;
-}
-
-#leftButton:active, #middleButton:active, #rightButton:active {
     transform: scale(0.9);
 }
 
@@ -142,7 +116,7 @@
 
 .dashboard {
     height: 300px;
-    border: 2px solid white;
+    border: 2px solid #242424;
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
@@ -152,12 +126,12 @@
 }
 
 .info {
-    color: white;
+    color: #242424;
     margin-right: 50px;
 }
 
 .text {
-    color: white;
+    color: #242424;
     margin-left: 10px;
     margin-right: 10px;
 }

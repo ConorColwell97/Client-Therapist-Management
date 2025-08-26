@@ -2,6 +2,7 @@ import './Styles.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import NavBar from '../Components/NavBar';
 
 const Therapist = () => {
     const navigate = useNavigate();
@@ -227,7 +228,7 @@ const Therapist = () => {
 
     const deleteTherapist = async () => {
         resetStates();
-    
+
         try {
             setError(null);
             const response = await axios.delete(`${VITE_URL}/therapists/name/${encodeURIComponent(therapistData.Name)}`);
@@ -332,22 +333,22 @@ const Therapist = () => {
 
     return (
         <div className='navContainer'>
-            <nav className='navBar'>
-            <button className='navButtons' onClick={resetPage}>Refresh Page</button>
-                <button className='navButtons' onClick={() => navigate("/")}>Home</button>
-                <button className='navButtons' onClick={() => navigate("/Client")}>Clients</button>
-                <button className='navButtons' onClick={() => navigate("/Session")}>Sessions</button>
-            </nav>
+            <NavBar />
 
             <div className='container'>
                 <h2 className='header'>Therapists</h2>
 
-                {search && (
-                    <div>
-                        <button className="buttons" onClick={displaySearch}>Search Therapist</button>
-                        <button className="buttons" onClick={disaplayAdd}>Add Therapist</button>
-                    </div>
-                )}
+
+                <div>
+                    {search && (
+                        <>
+                            <button className="buttons" onClick={displaySearch}>Search Therapist</button>
+                            <button className="buttons" onClick={disaplayAdd}>Add Therapist</button>
+                        </>
+                    )}
+                    <button className="buttons" onClick={() => navigate("/")}>Go home</button>
+                </div>
+
 
                 {showSearch && (
                     <div>
@@ -364,12 +365,12 @@ const Therapist = () => {
 
                 {therapistData && (
                     <div>
-                        <h2 style={{ color: "white" }}>Name: {therapistData.Name}</h2>
-                        <p style={{ color: "white" }}>Title: {therapistData.Title}</p>
-                        <p style={{ color: "white" }}>Email: {therapistData.Email}</p>
-                        <p style={{ color: "white" }}>Location: {therapistData.Location}</p>
-                        <p style={{ color: "white" }}>Years of Practice: {therapistData.YearsOfPractice}</p>
-                        <p style={{ color: "white" }}>Availability: {therapistData.Availability}</p>
+                        <h2 style={{ color: "black" }}>Name: {therapistData.Name}</h2>
+                        <p style={{ color: "black" }}>Title: {therapistData.Title}</p>
+                        <p style={{ color: "black" }}>Email: {therapistData.Email}</p>
+                        <p style={{ color: "black" }}>Location: {therapistData.Location}</p>
+                        <p style={{ color: "black" }}>Years of Practice: {therapistData.YearsOfPractice}</p>
+                        <p style={{ color: "black" }}>Availability: {therapistData.Availability}</p>
                         <button className="buttons" onClick={callUpdate}>Update Therapist</button>
                         <button className="buttons" onClick={deleteTherapist}>Delete Therapist</button>
                         <button className='buttons' onClick={resetPage}>Refresh</button>

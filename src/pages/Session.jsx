@@ -2,6 +2,7 @@ import './Styles.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import NavBar from '../Components/NavBar';
 
 const Session = () => {
     const navigate = useNavigate();
@@ -296,22 +297,20 @@ const Session = () => {
 
     return (
         <div className='navContainer'>
-            <nav className='navBar'>
-                <button className='navButtons' onClick={resetPage}>Refresh Page</button>
-                <button className='navButtons' onClick={() => navigate("/")}>Home</button>
-                <button className='navButtons' onClick={() => navigate("/Therapist")}>Therapists</button>
-                <button className='navButtons' onClick={() => navigate("/Client")}>Clients</button>
-            </nav>
+            <NavBar/>
 
             <div className='container'>
                 <h2 className='header'>Sessions</h2>
 
-                {search && (
-                    <div>
-                        <button className="buttons" onClick={displaySearch}>Search Session</button>
-                        <button className="buttons" onClick={disaplayAdd}>Add Session</button>
-                    </div>
-                )}
+                <div>
+                    {search && (
+                        <>
+                            <button className="buttons" onClick={displaySearch}>Search Therapist</button>
+                            <button className="buttons" onClick={disaplayAdd}>Add Therapist</button>
+                        </>
+                    )}
+                    <button className="buttons" onClick={() => navigate("/")}>Go home</button>
+                </div>
 
                 {showSearch && (
                     <div>
