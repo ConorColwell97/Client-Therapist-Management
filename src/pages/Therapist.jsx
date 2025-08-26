@@ -179,7 +179,6 @@ const Therapist = () => {
     }
 
     const getAllTherapists = async () => {
-        console.log(VITE_URL);
         try {
             setError(null);
             const response = await axios.get(`${VITE_URL}/therapists`);
