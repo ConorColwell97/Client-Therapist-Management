@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
   font-family: 'Roboto', 'Arial', 'Sans-serif';
   line-height: 1.5;
@@ -13,6 +15,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+p {
+  font-weight: bold;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -26,8 +32,8 @@ body {
   display: flex;
   /* margin: 0; */
   /* place-items: center; */
-  /* min-width: 320px;
-  min-height: 100vh; */
+  /* min-width: 320px; */
+  min-height: 100vh;
 }
 
 h1 {
@@ -48,6 +54,9 @@ button {
 }
 button:hover {
   border-color: #023973
+}
+button:active {
+  transform: scale(0.9);
 }
 button:focus,
 button:focus-visible {
