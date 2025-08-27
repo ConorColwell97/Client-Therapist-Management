@@ -3,6 +3,7 @@
     flex: 1;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 30%;
 }
 
@@ -40,7 +41,15 @@
     display: flex;
     justify-content: space-around;
     border-radius: 2rem;
+    min-width: 50%;
+    max-width: 50%;
 }
+
+/* #nav_container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+} */
 
 .navButtons {
     background: none;
@@ -115,14 +124,21 @@
 }
 
 .dashboard {
-    height: 300px;
-    border: 2px solid #888;
-    border-radius: 10px;
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    padding: 20px;
+    flex: 1;
+    flex-direction: column;
+    background-color: #111822;
+    border: 2px solid #888;
+    border-radius: 2rem;
     overflow: scroll;
+    min-width: 50%;
+}
+
+.display {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    border-top: 1px solid #888
 }
 
 .info {
