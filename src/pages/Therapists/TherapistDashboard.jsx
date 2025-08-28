@@ -4,6 +4,7 @@ import { IoMdCreate } from "react-icons/io";
 import { IoTrashOutline } from "react-icons/io5";
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import NavBar from '../../Components/NavBar';
 import axios from "axios";
 
 const Dashboard = () => {
@@ -22,6 +23,20 @@ const Dashboard = () => {
         }
     }
 
+    const deleteTherapist = async (name) => {
+        let response;
+
+         try {
+            response = await axios.delete(`${VITE_URL}/therapists/name/${encodeURIComponent(name)}`);
+            setTherapists((prev) => {
+                return prev.filter(item => item.Name !== name);
+            });
+            setSuccessMessage(response.data.message);
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+    }
+
     const search = async (name) => {
         sessionStorage.setItem("therapist", name);
         navigate("/TherapistDis");
@@ -33,6 +48,7 @@ const Dashboard = () => {
 
     return (
         <div className='container'>
+            <NavBar />
             <div className='dashboard'>
                 <h2>Therapists</h2>
                 {therapists.length > 0 ? (
@@ -47,7 +63,12 @@ const Dashboard = () => {
                             </div>
                             <div style={{ flexDirection: "column" }}>
                                 <p style={{ margin: "0px"}}>delete</p>
-                                <button style={{ backgroundColor: "#13141F" }}>{<IoTrashOutline color='white' />}</button>
+                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
+                                    alert(`Are you sure you wish to delete ${therapist.Name}?`);
+                                    if(therapist.Name !== null) {
+                                        deleteTherapist(therapist.Name);
+                                    }
+                                }}>{<IoTrashOutline color='white' />}</button>
                             </div>
                         </motion.div>
                     ))
@@ -55,7 +76,6 @@ const Dashboard = () => {
                     <h2>No data available</h2>
                 )}
             </div>
-            <button style={{ marginTop: "1rem" }} onClick={() => navigate("/Therapist")}>Go back</button>
         </div>
 
     );
