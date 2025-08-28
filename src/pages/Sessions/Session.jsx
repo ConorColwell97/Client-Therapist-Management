@@ -12,32 +12,34 @@ const Session = () => {
     const [name, setName] = useState("");
     const [add, setAdd] = useState(false);
 
-    const [newName, setNewName] = useState("");
-    const [newTitle, setNewTitle] = useState("");
-    const [newEmail, setNewEmail] = useState("");
-    const [newLocation, setNewLocation] = useState("");
-    const [newYears, setNewYears] = useState("");
-    const [newAvail, setNewAvail] = useState("NOT TAKING CLIENTS");
-    const [checked, setChecked] = useState(false);
+    const [newTherapist, setNewTherapist] = useState("");
+    const [newClient, setNewClient] = useState("");
+    const [newNotes, setNewNotes] = useState("NONE");
+    const [newDate, setNewDate] = useState("");
+    const [newLength, setNewLength] = useState(-1);
 
-    const disabled = (newName === "" || newTitle === "" || newEmail === "" || newLocation === "" || newYears === "");
+    const disabled = (newTherapist === "" || newClient=== "" || newNotes === "" || newDate === "" || newLength === -1);
 
-    const search = async () => {
-        sessionStorage.setItem("session", name);
+    const searchByTherapist = async () => {
+        sessionStorage.setItem("sessionTherapist", name);
         navigate("/SessionDis");
     }
 
-    const addTherapist = async () => {
+    const searchByClient = async () => {
+        sessionStorage.setItem("sessionClient", name);
+        navigate("/SessionDis");
+    }
+
+    const addSession = async () => {
         let response;
 
         try {
-            response = await axios.post(`${VITE_URL}/therapists`, {
-                Name: newName,
-                Title: newTitle,
-                Email: newEmail,
-                Location: newLocation,
-                YearsOfPractice: newYears,
-                Availability: newAvail
+            response = await axios.post(`${VITE_URL}/sessions`, {
+                Therapist: newTherapist,
+                Client: newClient,
+                Notes: newNotes,
+                SessionDate: newDate,
+                Length: newLength
             });
             setMessage(response.data.message);
 
@@ -59,14 +61,6 @@ const Session = () => {
         }
     }, [error]);
 
-    useEffect(() => {
-        if (checked) {
-            setNewAvail("TAKING CLIENTS");
-        } else {
-            setNewAvail("NOT TAKING CLIENTS");
-        }
-    }, [checked]);
-
     return (
         <div className='container'>
             <NavBar />
@@ -75,64 +69,55 @@ const Session = () => {
                     <h2>Enter details</h2>
                     <div className='enter'>
                         <label style={{ fontWeight: "bold" }}>
-                            Therapist Name:
+                            Session Therapist:
                             <input
                                 type="text"
-                                placeholder='Enter name'
-                                value={newName}
-                                onChange={(e) => setNewName(e.target.value)}
+                                placeholder='Enter Therapist name'
+                                value={newTherapist}
+                                onChange={(e) => setNewTherapist(e.target.value)}
                             />
                         </label>
 
                         <label style={{ fontWeight: "bold" }}>
-                            Therapist Title:
+                            Session Client:
                             <input
                                 type="text"
-                                placeholder='Enter title'
-                                value={newTitle}
-                                onChange={(e) => setNewTitle(e.target.value)}
+                                placeholder='Enter Client'
+                                value={newClient}
+                                onChange={(e) => setNewClient(e.target.value)}
                             />
                         </label>
 
                         <label style={{ fontWeight: "bold" }}>
-                            Therapist Email:
+                            Session Notes:
                             <input
                                 type="text"
-                                placeholder='Enter email'
-                                value={newEmail}
-                                onChange={(e) => setNewEmail(e.target.value)}
+                                placeholder='Enter notes'
+                                value={newNotes}
+                                onChange={(e) => setNewNotes(e.target.value)}
                             />
                         </label>
 
                         <label style={{ fontWeight: "bold" }}>
-                            Therapist Location:
+                            Session Date:
                             <input
-                                type="text"
-                                placeholder='Enter location'
-                                value={newLocation}
-                                onChange={(e) => setNewLocation(e.target.value)}
+                                type="date"
+                                value={newDate}
+                                onChange={(e) => setNewDate(e.target.value)}
                             />
                         </label>
 
                         <label style={{ fontWeight: "bold" }}>
-                            Therapist Experience:
+                            Session Length:
                             <input
                                 type="text"
-                                placeholder='Enter YOE'
-                                value={newYears}
-                                onChange={(e) => setNewYears(e.target.value)}
+                                placeholder='Enter length'
+                                value={newLength}
+                                onChange={(e) => setNewLength(e.target.value)}
                             />
                         </label>
 
-                        <label style={{ fontWeight: "bold" }}>
-                            Therapist Availability:
-                            <input
-                                type="checkbox"
-                                onChange={() => setChecked(!checked)}
-                            />
-                            Tick box for yes
-                        </label>
-                        <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} disabled={disabled} onClick={addTherapist}>Finish</button>
+                        <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} disabled={disabled} onClick={addSession}>Finish</button>
                         <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} onClick={() => setAdd(false)}>Cancel</button>
                     </div>
                 </>
@@ -140,12 +125,12 @@ const Session = () => {
             ) : (
                 <div className='menu'>
                     <div>
-                        <h2>View all currently registered Therapists</h2>
-                        <button onClick={() => navigate("/SessionDash")}>View Therapists</button>
+                        <h2>View all currently registered Sessions</h2>
+                        <button onClick={() => navigate("/SessionDash")}>View Sessions</button>
                     </div>
 
                     <div>
-                        <h2>Search for a Therapist</h2>
+                        <h2>Search for Session(s) by a Therapist</h2>
                         <div className='find'>
                             <input
                                 className='input'
@@ -154,14 +139,27 @@ const Session = () => {
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
-                            <button onClick={search}>Enter</button>
+                            <button onClick={searchByTherapist}>Enter</button>
+                            <button onClick={() => setName("")}>Cancel</button>
+                        </div>
+
+                        <h2>Search for Session(s) taken by a Client</h2>
+                        <div className='find'>
+                            <input
+                                className='input'
+                                type="text"
+                                placeholder='Enter client name'
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                            <button onClick={searchByClient}>Enter</button>
                             <button onClick={() => setName("")}>Cancel</button>
                         </div>
                     </div>
 
                     <div>
-                        <h2 style={{ marginTop: "10%" }}>Add a Therapist</h2>
-                        <button onClick={() => setAdd(true)}>Add Therapist</button>
+                        <h2 style={{ marginTop: "10%" }}>Add a Session</h2>
+                        <button onClick={() => setAdd(true)}>Add Session</button>
                     </div>
                 </div>
             )}

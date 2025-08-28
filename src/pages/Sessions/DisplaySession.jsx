@@ -5,7 +5,7 @@ import NavBar from "../../Components/NavBar";
 
 const DisplaySession = () => {
     const VITE_URL = import.meta.env.VITE_API_URL;
-    const [therapist, setTherapist] = useState(null);
+    const [session, setSession] = useState(null);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [newData, setNewData] = useState(null);
@@ -16,7 +16,7 @@ const DisplaySession = () => {
 
         try {
             response = await axios.get(`${VITE_URL}/therapists/name/${encodeURIComponent(name)}`);
-            setTherapist(response.data);
+            setSession(response.data);
 
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
