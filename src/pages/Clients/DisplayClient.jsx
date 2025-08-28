@@ -121,7 +121,7 @@ const DisplayClient = () => {
                             </div>
 
                             <div className="inner top">
-                                <p>Phone Number: {client.PhoneNumber} year(s)</p>
+                                <p>Phone Number: {client.PhoneNumber}</p>
                                 <button onClick={() => {
                                     const newNumber = prompt("Enter new Phone Number");
                                     if (newNumber !== null && newNumber.trim() !== "") {
