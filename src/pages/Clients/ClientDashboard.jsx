@@ -7,28 +7,28 @@ import { useNavigate } from "react-router-dom";
 import NavBar from '../../Components/NavBar';
 import axios from "axios";
 
-const TherapistDashboard = () => {
+const ClientDashboard = () => {
     const navigate = useNavigate();
     const VITE_URL = import.meta.env.VITE_API_URL;
-    const [therapists, setTherapists] = useState([]);
+    const [clients, setClients] = useState([]);
     const [error, setError] = useState("");
 
-    const getAllTherapists = async () => {
+    const getAllClients = async () => {
         try {
             setError("");
-            const response = await axios.get(`${VITE_URL}/therapists`);
-            setTherapists(response.data);
+            const response = await axios.get(`${VITE_URL}/clients`);
+            setClients(response.data);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
     }
 
-    const deleteTherapist = async (name) => {
+    const deleteClient = async (name) => {
         let response;
 
         try {
-            response = await axios.delete(`${VITE_URL}/therapists/name/${encodeURIComponent(name)}`);
-            setTherapists((prev) => {
+            response = await axios.delete(`${VITE_URL}/clients/name/${encodeURIComponent(name)}`);
+            setClients((prev) => {
                 return prev.filter(item => item.Name !== name);
             });
             setSuccessMessage(response.data.message);
@@ -38,31 +38,31 @@ const TherapistDashboard = () => {
     }
 
     const search = async (name) => {
-        sessionStorage.setItem("therapist", name);
-        navigate("/TherapistDis");
+        sessionStorage.setItem("client", name);
+        navigate("/ClientDis");
     }
 
     useEffect(() => {
-        getAllTherapists();
+        getAllClients();
     }, []);
 
     return (
         <div className='container'>
             <NavBar />
             <div className='dashboard'>
-                <h2>Therapists</h2>
-                {therapists.length > 0 ? (
-                    therapists.map((therapist, index) => (
+                <h2>Clients</h2>
+                {clients.length > 0 ? (
+                    clients.map((client, index) => (
                         <motion.div className='display' key={index} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-                            <p>Dr.{therapist.Name}</p>
-                            <p>{therapist.Title}</p>
-                            <p>{therapist.Availability}</p>
+                            <p>{client.Name}</p>
+                            <p>{client.Email}</p>
+                            <p>{client.PhoneNumber}</p>
 
-                            <button onClick={() => search(therapist.Name)}>{<IoMdCreate color='white'/>} Edit</button>
+                            <button onClick={() => search(client.Name)}>{<IoMdCreate color='white'/>} Edit</button>
                             <button onClick={() => {
-                                alert(`Are you sure you wish to delete ${therapist.Name}?`);
-                                if (therapist.Name !== null) {
-                                    deleteTherapist(therapist.Name);
+                                alert(`Are you sure you wish to delete ${client.Name}?`);
+                                if (client.Name !== null) {
+                                    deleteClient(client.Name);
                                 }
                             }}>{<IoTrashOutline color='white'/>} Delete</button>
 
@@ -77,4 +77,4 @@ const TherapistDashboard = () => {
     );
 }
 
-export default TherapistDashboard;
+export default ClientDashboard;

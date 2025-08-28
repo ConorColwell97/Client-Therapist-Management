@@ -3,20 +3,20 @@ import axios from "axios";
 import { animate, motion } from 'framer-motion';
 import NavBar from "../../Components/NavBar";
 
-const DisplayTherapist = () => {
+const DisplayClient = () => {
     const VITE_URL = import.meta.env.VITE_API_URL;
-    const [therapist, setTherapist] = useState(null);
+    const [client, setClient] = useState(null);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [newData, setNewData] = useState(null);
 
-    const getTherapist = async () => {
-        const name = sessionStorage.getItem("therapist");
+    const getClient = async () => {
+        const name = sessionStorage.getItem("client");
         let response;
 
         try {
-            response = await axios.get(`${VITE_URL}/therapists/name/${encodeURIComponent(name)}`);
-            setTherapist(response.data);
+            response = await axios.get(`${VITE_URL}/clients/name/${encodeURIComponent(name)}`);
+            setClient(response.data);
 
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -28,7 +28,7 @@ const DisplayTherapist = () => {
         let response;
 
         try {
-            response = await axios.patch(`${VITE_URL}/therapists/${type}/${encodeURIComponent(therapist.Name)}`, { data }, {
+            response = await axios.patch(`${VITE_URL}/clients/${type}/${encodeURIComponent(client.Name)}`, { data }, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -36,7 +36,7 @@ const DisplayTherapist = () => {
 
             checkType(data, type);
             setNewData(data);
-            sessionStorage.setItem("therapist", data);
+            sessionStorage.setItem("client", data);
             setMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -46,22 +46,19 @@ const DisplayTherapist = () => {
     const checkType = (data, type) => {
         switch (type) {
             case 'name':
-                therapist.Name = data;
-                break;
-            case 'title':
-                therapist.Title = data;
+                client.Name = data;
                 break;
             case 'email':
-                therapist.Email = data;
+                client.Email = data;
                 break;
             case 'location':
-                therapist.Location = data;
+                client.Location = data;
                 break;
-            case 'years':
-                therapist.YearsOfPractice = data;
+            case 'number':
+                client.PhoneNumber = data;
                 break
-            case 'avail':
-                therapist.Availability = data;
+            case 'reg':
+                client.Regularity = data;
                 break;
             default: return;
         }
@@ -82,19 +79,19 @@ const DisplayTherapist = () => {
     }, [error]);
 
     useEffect(() => {
-        getTherapist();
+        getClient();
     }, []);
 
     return (
         <div className="container">
             <NavBar />
-            <h1>Therapist Details</h1>
+            <h1>Client Details</h1>
             <div>
                 <motion.div className="displayContainer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-                    {therapist !== null ? (
+                    {client !== null ? (
                         <>
                             <div className="inner">
-                                <p>Name: Dr.{therapist.Name}</p>
+                                <p>Name: {client.Name}</p>
                                 <button onClick={() => {
                                     const newName = prompt("Enter new name");
                                     if (newName !== null && newName.trim() !== "") {
@@ -104,17 +101,7 @@ const DisplayTherapist = () => {
                             </div>
 
                             <div className="inner top">
-                                <p>Title: {therapist.Title}</p>
-                                <button onClick={() => {
-                                    const newTitle = prompt("Enter new title");
-                                    if (newTitle !== null && newTitle.trim() !== "") {
-                                        update(newTitle, 'title');
-                                    }
-                                }}>Change Title</button>
-                            </div>
-
-                            <div className="inner top">
-                                <p>Email: {therapist.Email}</p>
+                                <p>Email: {client.Email}</p>
                                 <button onClick={() => {
                                     const newEmail = prompt("Enter new email");
                                     if (newEmail !== null && newEmail.trim() !== "") {
@@ -124,7 +111,7 @@ const DisplayTherapist = () => {
                             </div>
 
                             <div className="inner top">
-                                <p>Location: {therapist.Location}</p>
+                                <p>Location: {client.Location}</p>
                                 <button onClick={() => {
                                     const newLocation = prompt("Enter new location");
                                     if (newLocation !== null && newLocation.trim() !== "") {
@@ -134,28 +121,28 @@ const DisplayTherapist = () => {
                             </div>
 
                             <div className="inner top">
-                                <p>Experience: {therapist.YearsOfPractice} year(s)</p>
+                                <p>Phone Number: {client.PhoneNumber} year(s)</p>
                                 <button onClick={() => {
-                                    const newYears = prompt("Enter new years of experience");
-                                    if (newYears >= 0 && !isNaN(newYears)) {
-                                        update(newYears, 'years');
+                                    const newNumber = prompt("Enter new Phone Number");
+                                    if (newNumber !== null && newNumber.trim() !== "") {
+                                        update(newNumber , 'number');
                                     }
-                                }}>Update Experience</button>
+                                }}>Update Phone Number</button>
                             </div>
 
                             <div className="inner top">
-                                {therapist.Availability == 'TAKING CLIENTS' ? (
-                                    <p>Taking clients: YES</p>
+                                {client.Regularity == 'WEEKLY' ? (
+                                    <p>Regularity: WEEKLY</p>
                                 ) : (
-                                    <p>Taking clients: NO</p>
+                                    <p>Regularity: MONTHLY</p>
                                 )}
                                 <button onClick={() => {
-                                    const newAvail = (therapist.Availability === 'TAKING CLIENTS') ? 'NOT TAKING CLIENTS' : 'TAKING CLIENTS';
-                                    alert("Change Therapist Availability?");
-                                    if (newAvail === 'TAKING CLIENTS' || newAvail === 'NOT TAKING CLIENTS') {
-                                        update(newAvail, 'avail');
+                                    const newReg = (client.Regularity == 'WEEKLY') ? 'MONTHLY' : 'WEEKLY';
+                                    alert("Change Client Regularity?");
+                                    if (newReg === 'WEEKLY' || newReg === 'MONTHLY') {
+                                        update(newReg, 'reg');
                                     }
-                                }}>Change Availability</button>
+                                }}>Change Regularity</button>
                             </div>
                         </>
                     ) : (
@@ -167,4 +154,4 @@ const DisplayTherapist = () => {
     );
 }
 
-export default DisplayTherapist;
+export default DisplayClient;

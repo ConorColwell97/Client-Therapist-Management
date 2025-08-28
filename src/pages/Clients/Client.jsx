@@ -1,463 +1,162 @@
 import '../Styles.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import NavBar from '../../Components/NavBar';
+import axios from 'axios';
 
 const Client = () => {
     const navigate = useNavigate();
     const VITE_URL = import.meta.env.VITE_API_URL;
+    const [message, setMessage] = useState(null);
+    const [error, setError] = useState("");
+    const [name, setName] = useState("");
+    const [add, setAdd] = useState(false);
 
-    const [clientName, setClientName] = useState("");
     const [newName, setNewName] = useState("");
     const [newEmail, setNewEmail] = useState("");
+    const [newLocation, setNewLocation] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [newReg, setNewReg] = useState("");
+    const [checked, setChecked] = useState(false);
 
-    const [allData, setAllData] = useState([]);
-    const [clientData, setClientData] = useState(null);
+    const disabled = (newName === "" || newEmail === "" || newLocation === "" || newNumber === "" || newReg === "");
 
-    const [search, setSearch] = useState(true);
-    const [showSearch, setShowSearch] = useState(false);
-    const [showAdd, setShowAdd] = useState(false);
-    const [showData, setShowData] = useState(false);
-    const [showUpdate, setShowUpdate] = useState(false);
-    const [updName, setUpdName] = useState(false);
-    const [updEmail, setUpdEmail] = useState(false);
-    const [updNumber, setUpdNumber] = useState(false);
-    const [updReg, setUpdReg] = useState(false);
-
-    const [error, setError] = useState(null);
-    const [successMessage, setSuccessMessage] = useState("");
-
-    const displaySearch = () => {
-        setShowSearch(true);
-        setShowAdd(false);
-        setSuccessMessage(null);
-        setError(null);
-    }
-
-    const callSearch = () => {
-        getClient();
-        setShowData(true);
-        setShowSearch(false);
-        setShowAdd(false);
-        resetStates();
-    }
-
-    const disaplayAdd = () => {
-        setShowAdd(true);
-        setShowSearch(false);
-        setSuccessMessage(null);
-        setError(null);
-    }
-
-    const callAdd = () => {
-        addClient();
-        setShowAdd(false);
-    }
-
-    const weekly = () => {
-        setNewReg("WEEKLY");
-    }
-
-    const monthly = () => {
-        setNewReg("MONTHLY");
-    }
-
-    const callUpdate = () => {
-        setShowUpdate(true);
-        setShowSearch(false);
-        setSuccessMessage(null);
-        setError(null);
-    }
-
-    const callUpdName = () => {
-        setShowUpdate(false);
-        setUpdName(true);
-    }
-
-    const callNameUpdate = () => {
-        updateName();
-        setUpdName(false);
-        setShowUpdate(false);
-        setShowSearch(true);
-    }
-
-
-    const callUpdEmail = () => {
-        setShowUpdate(false);
-        setUpdEmail(true);
-        setSuccessMessage(null);
-        setError(null);
-    }
-
-    const callEmailUpdate = () => {
-        updateEmail();
-        setUpdEmail(false);
-        setShowUpdate(false);
-        setShowSearch(true);
-    }
-
-    const callUpdNumber = () => {
-        setShowUpdate(false);
-        setUpdNumber(true);
-        setSuccessMessage(null);
-        setError(null);
-    }
-
-    const callNumberUpdate = () => {
-        updateNumber();
-        setUpdNumber(false);
-        setShowUpdate(false);
-        setShowSearch(true);
-    }
-
-    const callUpdReg = () => {
-        setShowUpdate(false);
-        setUpdReg(true);
-        setSuccessMessage(null);
-        setError(null);
-    }
-
-    const callRegUpdate = () => {
-        updateRegularity();
-        setUpdReg(false);
-        setShowUpdate(false);
-        setShowSearch(true);
-    }
-
-    const resetStates = () => {
-        setNewName("");
-        setClientName("");
-        setNewEmail("");
-        setNewNumber("");
-        setNewReg("");
-    }
-
-    const resetPage = () => {
-        setClientData(null);
-        setShowSearch(false);
-        setShowAdd(false);
-        setShowUpdate(false);
-        setSuccessMessage(null);
-        setError(null);
-        getAllClients();
-    }
-
-    const getAllClients = async () => {
-        try {
-            setError(null);
-            const response = await axios.get(`${VITE_URL}/clients`);
-            setAllData(response.data);
-        } catch (err) {
-            console.error("Error fetching clients:", err);
-            setAllData([]);
-            setError(err.response?.data?.message || "An error occurred");
-        }
-    }
-
-    const getClient = async () => {
-        resetStates();
-
-        try {
-            setError(null);
-            const response = await axios.get(`${VITE_URL}/clients/name/${encodeURIComponent(clientName)}`);
-            console.log(response.data);
-            setClientData(response.data);
-        } catch (err) {
-            console.error("Error fetching client:", err);
-            setClientData(null);
-            setError(err.response?.data?.message || "An error occurred");
-        }
+    const search = async () => {
+        sessionStorage.setItem("client", name);
+        navigate("/ClientDis");
     }
 
     const addClient = async () => {
-        resetStates();
+        let response;
 
         try {
-            setError(null);
-            const response = await axios.post(`${VITE_URL}/clients`, {
+            response = await axios.post(`${VITE_URL}/clients`, {
                 Name: newName,
                 Email: newEmail,
+                Location: newLocation,
                 PhoneNumber: newNumber,
                 Regularity: newReg
             });
-            setSuccessMessage(response.data.message);
+            setMessage(response.data.message);
 
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
-
-        resetPage();
-    }
-
-    const deleteClient = async () => {
-        resetStates();
-
-        try {
-            setError(null);
-            const response = await axios.delete(`${VITE_URL}/clients/name/${encodeURIComponent(clientData.Name)}`);
-            console.log(response.data);
-            setSuccessMessage(response.data.message);
-            setClientData(null);
-        } catch (err) {
-            console.error("Could not delete client:", err);
-            setClientData(null);
-            setError(err.response?.data?.message || "An error occurred");
-        }
-    }
-
-    const updateName = async () => {
-        console.log(clientData.Name);
-        console.log(newName);
-
-        try {
-            setError(null);
-            const response = await axios.patch(`${VITE_URL}/clients/name/${encodeURIComponent(clientData.Name)}`, { newName }, { headers: { "Content-Type": "application/json" } });
-            setSuccessMessage(response.data.message);
-        } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
-        }
-        resetStates();
-    }
-
-    const updateEmail = async () => {
-        console.log(clientData.Email);
-        console.log(newEmail);
-
-        try {
-            setError(null);
-            const response = await axios.patch(`${VITE_URL}/clients/email/${encodeURIComponent(clientData.Name)}`, { newEmail }, { headers: { "Content-Type": "application/json" } });
-            setSuccessMessage(response.data.message);
-        } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
-        }
-        resetStates();
-    }
-
-    const updateNumber = async () => {
-        console.log(clientData.PhoneNumber);
-        console.log(newNumber);
-
-        try {
-            setError(null);
-            const response = await axios.patch(`${VITE_URL}/clients/number/${encodeURIComponent(clientData.Name)}`, { newNumber }, { headers: { "Content-Type": "application/json" } });
-            setSuccessMessage(response.data.message);
-        } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
-        }
-        resetStates();
-    }
-
-    const updateRegularity = async () => {
-        console.log(clientData.Regularity);
-        console.log(newReg);
-
-        try {
-            setError(null);
-            const response = await axios.patch(`${VITE_URL}/clients/reg/${encodeURIComponent(clientData.Name)}`, { newReg }, { headers: { "Content-Type": "application/json" } });
-            setSuccessMessage(response.data.message);
-        } catch (err) {
-            setError(err.response?.data?.message || "An error occurred");
-        }
-        resetStates();
     }
 
     useEffect(() => {
-        getAllClients();
-    }, []);
+        if (message) {
+            alert(message);
+            setAdd(false);
+        }
+    }, [message]);
+
+    useEffect(() => {
+        if (error) {
+            alert(error);
+        }
+    }, [error]);
 
     return (
-        <div className='navContainer'>
-            <NavBar/>
+        <div className='container'>
+            <NavBar />
+            {add ? (
+                <>
+                    <h2>Enter details</h2>
+                    <div className='enter'>
+                        <label style={{ fontWeight: "bold" }}>
+                            Client Name:
+                            <input
+                                type="text"
+                                placeholder='Enter name'
+                                value={newName}
+                                onChange={(e) => setNewName(e.target.value)}
+                            />
+                        </label>
 
-            <div className='container'>
-                <h2 className='header'>Clients</h2>
+                        <label style={{ fontWeight: "bold" }}>
+                            Client Email:
+                            <input
+                                type="text"
+                                placeholder='Enter email'
+                                value={newEmail}
+                                onChange={(e) => setNewEmail(e.target.value)}
+                            />
+                        </label>
 
-                <div>
-                    {search && (
-                        <>
-                            <button className="buttons" onClick={displaySearch}>Search Therapist</button>
-                            <button className="buttons" onClick={disaplayAdd}>Add Therapist</button>
-                        </>
-                    )}
-                    <button className="buttons" onClick={() => navigate("/")}>Go home</button>
-                </div>
+                        <label style={{ fontWeight: "bold" }}>
+                            Clinet Location:
+                            <input
+                                type="text"
+                                placeholder='Enter location'
+                                value={newLocation}
+                                onChange={(e) => setNewLocation(e.target.value)}
+                            />
+                        </label>
 
-                {showSearch && (
+                        <label style={{ fontWeight: "bold" }}>
+                            Client Phone number:
+                            <input
+                                type="text"
+                                placeholder='Enter phone number'
+                                value={newNumber}
+                                onChange={(e) => setNewNumber(e.target.value)}
+                            />
+                        </label>
+
+                        <label style={{ fontWeight: "bold" }}>
+                            Regularity of Sessions:
+                            <input
+                                type="radio"
+                                value="weekly"
+                                checked={newReg === "weekly"}
+                                onChange={(e) => setNewReg(e.target.value)}
+                            />
+                            Weekly
+                            <input
+                                type="radio"
+                                value="monthly"
+                                checked={newReg === "monthly"}
+                                onChange={(e) => setNewReg(e.target.value)}
+                            />
+                            Monthly
+                        </label>
+
+                        <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} disabled={disabled} onClick={addClient}>Finish</button>
+                        <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} onClick={() => setAdd(false)}>Cancel</button>
+                    </div>
+                </>
+
+            ) : (
+                <div className='menu'>
                     <div>
-                        <input
-                            type="text"
-                            placeholder="Enter Client Name"
-                            className="userInput"
-                            value={clientName}
-                            onChange={(e) => setClientName(e.target.value)}
-                        />
-                        <button className="buttons" onClick={callSearch}>Search</button>
+                        <h2>View all currently registered Clients</h2>
+                        <button onClick={() => navigate("/ClientDash")}>View Clients</button>
                     </div>
-                )}
 
-                {clientData && (
                     <div>
-                        <h2 style={{ color: "white" }}>Name: {clientData.Name}</h2>
-                        <p style={{ color: "white" }}>Email: {clientData.Email}</p>
-                        <p style={{ color: "white" }}>Phone Number: {clientData.PhoneNumber}</p>
-                        <p style={{ color: "white" }}>Regularity: {clientData.Regularity}</p>
-                        <button className="buttons" onClick={callUpdate}>Update Client</button>
-                        <button className="buttons" onClick={deleteClient}>Delete Client</button>
-                        <button className='buttons' onClick={resetPage}>Refresh</button>
-                    </div>
-                )}
-
-                {showAdd && (
-                    <div class='margin'>
-                        <input
-                            type="text"
-                            placeholder="Enter Name"
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Enter Email"
-                            value={newEmail}
-                            onChange={(e) => setNewEmail(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Enter Phone Number"
-                            value={newNumber}
-                            onChange={(e) => setNewNumber(e.target.value)}
-                        />
-                        <div className='dropdown'>
-                            <button className='dropbutton'>Set Regularity</button>
-                            <div className='dropdown-content'>
-                                <button className='buttons' onClick={weekly}>WEEKLY</button>
-                                <button className='buttons' onClick={monthly}>MONTHLY</button>
-                            </div>
+                        <h2>Search for a Client</h2>
+                        <div className='find'>
+                            <input
+                                className='input'
+                                type="text"
+                                placeholder='Enter client name'
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                            <button onClick={search}>Enter</button>
+                            <button onClick={() => setName("")}>Cancel</button>
                         </div>
-                        <button onClick={callAdd}>Add</button>
-                    </div>
-                )}
-
-                {showUpdate && (
-                    <div class='margin'>
-                        <button className="buttons" onClick={callUpdName}>Update Name</button>
-                        <button className="buttons" onClick={callUpdEmail}>Update Email </button>
-                        <button className="buttons" onClick={callUpdNumber}>Update Phone Number</button>
-                        <button className="buttons" onClick={callUpdReg}>Update Regularity</button>
-                    </div>
-                )}
-
-                {updName && (
-                    <div class='margin'>
-                        <input
-                            type="text"
-                            placeholder="Enter new Name"
-                            value={newName}
-                            onChange={(e) => setNewName(e.target.value)}
-                        />
-                        <button onClick={callNameUpdate}>Submit</button>
-                    </div>
-                )}
-
-                {updEmail && (
-                    <div class='margin'>
-                        <input
-                            type="text"
-                            placeholder="Enter new Email"
-                            value={newEmail}
-                            onChange={(e) => setNewEmail(e.target.value)}
-                        />
-                        <button onClick={callEmailUpdate}>Submit</button>
-                    </div>
-                )}
-
-                {updNumber && (
-                    <div class='margin'>
-                        <input
-                            type="text"
-                            placeholder="Enter new Phone Number"
-                            value={newNumber}
-                            onChange={(e) => setNewNumber(e.target.value)}
-                        />
-                        <button onClick={callNumberUpdate}>Submit</button>
-                    </div>
-                )}
-
-                {updReg && (
-                    <div class='margin'>
-                        <div className='dropdown'>
-                            <button className='dropbutton'>Set Regularity</button>
-                            <div className='dropdown-content'>
-                                <button className='buttons' onClick={weekly}>WEEKLY</button>
-                                <button className='buttons' onClick={monthly}>MONTHLY</button>
-                            </div>
-                        </div>
-                        <button onClick={callRegUpdate}>Submit</button>
-                    </div>
-                )}
-
-                {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-                {error && <p style={{ color: "red" }}>{error}</p>}
-
-                <h1 className='dashHeader'>Current Clients</h1>
-                <div className='dashboard'>
-                    <div className='column'>
-                        <h2 className='info'>Name</h2>
-                        {Array.isArray(allData) && allData.length > 0 ? (
-                            allData.map((client, index) => (
-                                <div key={index} className='column'>
-                                    <p className='info'>{client.Name}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p className='info'>No clients found.</p>
-                        )}
                     </div>
 
-                    <div className='column'>
-                        <h2 className='info'>Email</h2>
-                        {Array.isArray(allData) && allData.length > 0 ? (
-                            allData.map((client, index) => (
-                                <div key={index} className='column'>
-                                    <p className='info'>{client.Email}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p className='info'>No clients found.</p>
-                        )}
-                    </div>
-
-                    <div className='column'>
-                        <h2 className='info'>Phone Number</h2>
-                        {Array.isArray(allData) && allData.length > 0 ? (
-                            allData.map((client, index) => (
-                                <div key={index} className='column'>
-                                    <p className='info'>{client.PhoneNumber}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p className='info'>No clients found.</p>
-                        )}
-                    </div>
-
-                    <div className='column'>
-                        <h2 className='info'>Regularity</h2>
-                        {Array.isArray(allData) && allData.length > 0 ? (
-                            allData.map((client, index) => (
-                                <div key={index} className='column'>
-                                    <p className='info'>{client.Regularity}</p>
-                                </div>
-                            ))
-                        ) : (
-                            <p className='info'>No clients found.</p>
-                        )}
+                    <div>
+                        <h2 style={{ marginTop: "10%" }}>Add a Client</h2>
+                        <button onClick={() => setAdd(true)}>Add Client</button>
                     </div>
                 </div>
-            </div>
-        </div>
+            )}
+        </div >
     );
 }
+
 export default Client;

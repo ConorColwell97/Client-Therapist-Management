@@ -3,7 +3,7 @@ import axios from "axios";
 import { animate, motion } from 'framer-motion';
 import NavBar from "../../Components/NavBar";
 
-const DisplayTherapist = () => {
+const DisplaySession = () => {
     const VITE_URL = import.meta.env.VITE_API_URL;
     const [therapist, setTherapist] = useState(null);
     const [message, setMessage] = useState("");
@@ -11,7 +11,7 @@ const DisplayTherapist = () => {
     const [newData, setNewData] = useState(null);
 
     const getTherapist = async () => {
-        const name = sessionStorage.getItem("therapist");
+        const name = sessionStorage.getItem("session");
         let response;
 
         try {
@@ -36,7 +36,7 @@ const DisplayTherapist = () => {
 
             checkType(data, type);
             setNewData(data);
-            sessionStorage.setItem("therapist", data);
+            sessionStorage.setItem("session", data);
             setMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -95,7 +95,7 @@ const DisplayTherapist = () => {
                         <>
                             <div className="inner">
                                 <p>Name: Dr.{therapist.Name}</p>
-                                <button onClick={() => {
+                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
                                     const newName = prompt("Enter new name");
                                     if (newName !== null && newName.trim() !== "") {
                                         update(newName, 'name');
@@ -105,7 +105,7 @@ const DisplayTherapist = () => {
 
                             <div className="inner top">
                                 <p>Title: {therapist.Title}</p>
-                                <button onClick={() => {
+                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
                                     const newTitle = prompt("Enter new title");
                                     if (newTitle !== null && newTitle.trim() !== "") {
                                         update(newTitle, 'title');
@@ -115,7 +115,7 @@ const DisplayTherapist = () => {
 
                             <div className="inner top">
                                 <p>Email: {therapist.Email}</p>
-                                <button onClick={() => {
+                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
                                     const newEmail = prompt("Enter new email");
                                     if (newEmail !== null && newEmail.trim() !== "") {
                                         update(newEmail, 'email');
@@ -125,7 +125,7 @@ const DisplayTherapist = () => {
 
                             <div className="inner top">
                                 <p>Location: {therapist.Location}</p>
-                                <button onClick={() => {
+                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
                                     const newLocation = prompt("Enter new location");
                                     if (newLocation !== null && newLocation.trim() !== "") {
                                         update(newLocation, 'location');
@@ -135,7 +135,7 @@ const DisplayTherapist = () => {
 
                             <div className="inner top">
                                 <p>Experience: {therapist.YearsOfPractice} year(s)</p>
-                                <button onClick={() => {
+                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
                                     const newYears = prompt("Enter new years of experience");
                                     if (newYears >= 0 && !isNaN(newYears)) {
                                         update(newYears, 'years');
@@ -149,7 +149,7 @@ const DisplayTherapist = () => {
                                 ) : (
                                     <p>Taking clients: NO</p>
                                 )}
-                                <button onClick={() => {
+                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
                                     const newAvail = (therapist.Availability === 'TAKING CLIENTS') ? 'NOT TAKING CLIENTS' : 'TAKING CLIENTS';
                                     alert("Change Therapist Availability?");
                                     if (newAvail === 'TAKING CLIENTS' || newAvail === 'NOT TAKING CLIENTS') {
@@ -167,4 +167,4 @@ const DisplayTherapist = () => {
     );
 }
 
-export default DisplayTherapist;
+export default DisplaySession;

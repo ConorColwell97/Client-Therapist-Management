@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from '../../Components/NavBar';
 import axios from "axios";
 
-const TherapistDashboard = () => {
+const SessionDashboard = () => {
     const navigate = useNavigate();
     const VITE_URL = import.meta.env.VITE_API_URL;
     const [therapists, setTherapists] = useState([]);
@@ -38,8 +38,8 @@ const TherapistDashboard = () => {
     }
 
     const search = async (name) => {
-        sessionStorage.setItem("therapist", name);
-        navigate("/TherapistDis");
+        sessionStorage.setItem("session", name);
+        navigate("/SessionDis");
     }
 
     useEffect(() => {
@@ -77,4 +77,4 @@ const TherapistDashboard = () => {
     );
 }
 
-export default TherapistDashboard;
+export default SessionDashboard;

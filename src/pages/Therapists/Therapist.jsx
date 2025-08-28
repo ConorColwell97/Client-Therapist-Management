@@ -132,8 +132,8 @@ const Therapist = () => {
                             />
                             Tick box for yes
                         </label>
-                        <button style={{ backgroundColor: "#13141F", width: "5rem", margin: "0 auto" }} disabled={disabled} onClick={addTherapist}>Finish</button>
-                        <button style={{ backgroundColor: "#13141F", width: "5rem", margin: "0 auto" }} onClick={() => setAdd(false)}>Cancel</button>
+                        <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} disabled={disabled} onClick={addTherapist}>Finish</button>
+                        <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} onClick={() => setAdd(false)}>Cancel</button>
                     </div>
                 </>
 
