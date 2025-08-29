@@ -163,7 +163,7 @@
     flex-direction: column;
     background-color: #111822;
     border-radius: 2rem;
-    min-width: 50%;
+    min-width: 30%;
 }
 
 .message {

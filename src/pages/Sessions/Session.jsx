@@ -9,24 +9,27 @@ const Session = () => {
     const VITE_URL = import.meta.env.VITE_API_URL;
     const [message, setMessage] = useState(null);
     const [error, setError] = useState("");
-    const [name, setName] = useState("");
+    const [therapist, setTherapist] = useState("");
+    const [client, setClient] = useState("");
     const [add, setAdd] = useState(false);
 
     const [newTherapist, setNewTherapist] = useState("");
     const [newClient, setNewClient] = useState("");
-    const [newNotes, setNewNotes] = useState("NONE");
+    const [newNotes, setNewNotes] = useState("");
     const [newDate, setNewDate] = useState("");
-    const [newLength, setNewLength] = useState(-1);
+    const [newLength, setNewLength] = useState("");
 
-    const disabled = (newTherapist === "" || newClient=== "" || newNotes === "" || newDate === "" || newLength === -1);
+    const disabled = (newTherapist === "" || newClient=== "" || newNotes === "" || newDate === "" || newLength === "");
 
     const searchByTherapist = async () => {
-        sessionStorage.setItem("sessionTherapist", name);
+        sessionStorage.setItem("sessionTherapist", therapist);
+        sessionStorage.setItem("session", "therapist");
         navigate("/SessionDis");
     }
 
     const searchByClient = async () => {
-        sessionStorage.setItem("sessionClient", name);
+        sessionStorage.setItem("sessionClient", client);
+        sessionStorage.setItem("session", "client");
         navigate("/SessionDis");
     }
 
@@ -46,6 +49,12 @@ const Session = () => {
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
+
+        setNewTherapist("");
+        setNewClient("");
+        setNewNotes("");
+        setNewDate("");
+        setNewLength("");
     }
 
     useEffect(() => {
@@ -136,11 +145,11 @@ const Session = () => {
                                 className='input'
                                 type="text"
                                 placeholder='Enter therapist name'
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={therapist}
+                                onChange={(e) => setTherapist(e.target.value)}
                             />
                             <button onClick={searchByTherapist}>Enter</button>
-                            <button onClick={() => setName("")}>Cancel</button>
+                            <button onClick={() => setTherapist("")}>Cancel</button>
                         </div>
 
                         <h2>Search for Session(s) taken by a Client</h2>
@@ -149,11 +158,11 @@ const Session = () => {
                                 className='input'
                                 type="text"
                                 placeholder='Enter client name'
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                value={client}
+                                onChange={(e) => setClient(e.target.value)}
                             />
                             <button onClick={searchByClient}>Enter</button>
-                            <button onClick={() => setName("")}>Cancel</button>
+                            <button onClick={() => setClient("")}>Cancel</button>
                         </div>
                     </div>
 

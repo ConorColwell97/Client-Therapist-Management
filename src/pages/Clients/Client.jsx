@@ -42,6 +42,12 @@ const Client = () => {
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
+
+        setNewName("");
+        setNewEmail("");
+        setNewLocation("");
+        setNewNumber("");
+        setNewReg("");
     }
 
     useEffect(() => {
@@ -85,7 +91,7 @@ const Client = () => {
                         </label>
 
                         <label style={{ fontWeight: "bold" }}>
-                            Clinet Location:
+                            Client Location:
                             <input
                                 type="text"
                                 placeholder='Enter location'

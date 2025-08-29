@@ -44,6 +44,12 @@ const Therapist = () => {
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
+
+        setNewName("");
+        setNewTitle("");
+        setNewEmail("");
+        setNewLocation("");
+        setNewYears("");
     }
 
     useEffect(() => {

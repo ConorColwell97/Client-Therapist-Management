@@ -5,18 +5,26 @@ import NavBar from "../../Components/NavBar";
 
 const DisplaySession = () => {
     const VITE_URL = import.meta.env.VITE_API_URL;
-    const [session, setSession] = useState(null);
+    const [sessions, setSessions] = useState([]);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
     const [newData, setNewData] = useState(null);
+    const [newDate, setNewDate] = useState("");
 
-    const getTherapist = async () => {
-        const name = sessionStorage.getItem("session");
+    const getSessionByID = async () => {
+        const id = sessionStorage.getItem("sessionID");
         let response;
 
         try {
-            response = await axios.get(`${VITE_URL}/therapists/name/${encodeURIComponent(name)}`);
-            setSession(response.data);
+            response = await axios.get(`${VITE_URL}/sessions/id/${encodeURIComponent(id)}`);
+
+            if (Array.isArray(response.data)) {
+                setSessions(response.data);
+            } else {
+                let arr = [];
+                arr.push(response.data);
+                setSessions(arr);
+            }
 
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
@@ -24,47 +32,96 @@ const DisplaySession = () => {
 
     }
 
-    const update = async (data, type) => {
+    const getSessionByTherapist = async () => {
+        const name = sessionStorage.getItem("sessionTherapist");
         let response;
 
         try {
-            response = await axios.patch(`${VITE_URL}/therapists/${type}/${encodeURIComponent(therapist.Name)}`, { data }, {
+            response = await axios.get(`${VITE_URL}/sessions/therapist/${encodeURIComponent(name)}`);
+
+            if (Array.isArray(response.data)) {
+                setSessions(response.data);
+            } else {
+                let arr = [];
+                arr.push(response.data);
+                setSessions(arr);
+            }
+
+            console.log(`Data: ${sessions}`);
+
+
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+
+    }
+
+    const getSessionByClient = async () => {
+        const name = sessionStorage.getItem("sessionClient");
+        let response;
+
+        try {
+            response = await axios.get(`${VITE_URL}/sessions/client/${encodeURIComponent(name)}`);
+
+            if (Array.isArray(response.data)) {
+                setSessions(response.data);
+            } else {
+                let arr = [];
+                arr.push(response.data);
+                setSessions(arr);
+            }
+
+        } catch (err) {
+            setError(err.response?.data?.message || "An error occurred");
+        }
+
+    }
+
+    const update = async (data, id, type) => {
+        let response;
+
+        try {
+            response = await axios.patch(`${VITE_URL}/sessions/${type}/${encodeURIComponent(id)}`, { data }, {
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
 
-            checkType(data, type);
+            checkType(data, id, type);
             setNewData(data);
-            sessionStorage.setItem("session", data);
+            // sessionStorage.setItem("sessionTherapist", data);
             setMessage(response.data.message);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
     }
 
-    const checkType = (data, type) => {
-        switch (type) {
-            case 'name':
-                therapist.Name = data;
-                break;
-            case 'title':
-                therapist.Title = data;
-                break;
-            case 'email':
-                therapist.Email = data;
-                break;
-            case 'location':
-                therapist.Location = data;
-                break;
-            case 'years':
-                therapist.YearsOfPractice = data;
-                break
-            case 'avail':
-                therapist.Availability = data;
-                break;
-            default: return;
+    const checkType = (data, id, type) => {
+
+        for (let i = 0; i < sessions.length; i++) {
+            if (sessions[i].ID === id) {
+                switch (type) {
+                    case 'therapist':
+                        sessions[i].Therapist = data;
+                        break;
+                    case 'client':
+                        sessions[i].Client = data;
+                        break;
+                    case 'notes':
+                        sessions[i].Notes = data;
+                        break;
+                    case 'date':
+                        sessions[i].SessionDate = data;
+                        break;
+                    case 'len':
+                        sessions[i].Length = data;
+                        break
+                    default: return;
+                }
+            }
+
         }
+
     }
 
     useEffect(() => {
@@ -82,87 +139,78 @@ const DisplaySession = () => {
     }, [error]);
 
     useEffect(() => {
-        getTherapist();
+        if (sessionStorage.getItem("session") === "id") {
+            getSessionByID();
+        } else if (sessionStorage.getItem("session") === "therapist") {
+            getSessionByTherapist();
+        } else {
+            getSessionByClient();
+        }
     }, []);
 
     return (
         <div className="container">
             <NavBar />
-            <h1>Therapist Details</h1>
-            <div>
+            <h1>Session Details</h1>
+            {sessions.length > 0 ? (
+                sessions.map((session, index) => (
+                    <motion.div key={index} style={{ marginBottom: "2rem" }} className="displayContainer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
+                        <div className="inner">
+                            <p>Therapist: Dr.{session.Therapist}</p>
+                            <button onClick={() => {
+                                const newTherapist = prompt("Enter new therapist");
+                                if (newTherapist !== null && newTherapist.trim() !== "") {
+                                    update(newTherapist, session.ID, 'therapist');
+                                }
+                            }}>Change Therapist</button>
+                        </div>
+
+                        <div className="inner top">
+                            <p>Client: {session.Client}</p>
+                            <button onClick={() => {
+                                const newClient = prompt("Enter new client");
+                                if (newClient !== null && newClient.trim() !== "") {
+                                    update(newClient, session.ID, 'client');
+                                }
+                            }}>Change Client</button>
+                        </div>
+
+                        <div className="inner top">
+                            <p>Notes: {session.Notes}</p>
+                            <button onClick={() => {
+                                const newNotes = prompt("Enter new notes");
+                                if (newNotes !== null && newNotes.trim() !== "") {
+                                    update(newNotes, session.ID, 'notes');
+                                }
+                            }}>Change Notes</button>
+                        </div>
+
+                        <div className="inner top">
+                            <p>Date: {session.SessionDate}</p>
+                            <input
+                                type="date"
+                                value={newDate}
+                                onChange={(e) => setNewDate(e.target.value)}
+                            />
+                            <button disabled={newDate === ""} onClick={() => update(newDate, session.ID, 'date')}>Change Date</button>
+                        </div>
+
+                        <div className="inner top">
+                            <p>Session Length: {session.Length} hour(s)</p>
+                            <button onClick={() => {
+                                const newLength = prompt("Enter new session length");
+                                if (newLength >= 0 && !isNaN(newLength)) {
+                                    update(newLength, session.ID, 'len');
+                                }
+                            }}>Update Length</button>
+                        </div>
+                    </motion.div>
+                ))
+            ) : (
                 <motion.div className="displayContainer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-                    {therapist !== null ? (
-                        <>
-                            <div className="inner">
-                                <p>Name: Dr.{therapist.Name}</p>
-                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
-                                    const newName = prompt("Enter new name");
-                                    if (newName !== null && newName.trim() !== "") {
-                                        update(newName, 'name');
-                                    }
-                                }}>Change Name</button>
-                            </div>
-
-                            <div className="inner top">
-                                <p>Title: {therapist.Title}</p>
-                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
-                                    const newTitle = prompt("Enter new title");
-                                    if (newTitle !== null && newTitle.trim() !== "") {
-                                        update(newTitle, 'title');
-                                    }
-                                }}>Change Title</button>
-                            </div>
-
-                            <div className="inner top">
-                                <p>Email: {therapist.Email}</p>
-                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
-                                    const newEmail = prompt("Enter new email");
-                                    if (newEmail !== null && newEmail.trim() !== "") {
-                                        update(newEmail, 'email');
-                                    }
-                                }}>Change Email</button>
-                            </div>
-
-                            <div className="inner top">
-                                <p>Location: {therapist.Location}</p>
-                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
-                                    const newLocation = prompt("Enter new location");
-                                    if (newLocation !== null && newLocation.trim() !== "") {
-                                        update(newLocation, 'location');
-                                    }
-                                }}>Change Location</button>
-                            </div>
-
-                            <div className="inner top">
-                                <p>Experience: {therapist.YearsOfPractice} year(s)</p>
-                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
-                                    const newYears = prompt("Enter new years of experience");
-                                    if (newYears >= 0 && !isNaN(newYears)) {
-                                        update(newYears, 'years');
-                                    }
-                                }}>Update Experience</button>
-                            </div>
-
-                            <div className="inner top">
-                                {therapist.Availability == 'TAKING CLIENTS' ? (
-                                    <p>Taking clients: YES</p>
-                                ) : (
-                                    <p>Taking clients: NO</p>
-                                )}
-                                <button style={{ backgroundColor: "#13141F" }} onClick={() => {
-                                    const newAvail = (therapist.Availability === 'TAKING CLIENTS') ? 'NOT TAKING CLIENTS' : 'TAKING CLIENTS';
-                                    alert("Change Therapist Availability?");
-                                    if (newAvail === 'TAKING CLIENTS' || newAvail === 'NOT TAKING CLIENTS') {
-                                        update(newAvail, 'avail');
-                                    }
-                                }}>Change Availability</button>
-                            </div>
-                        </>
-                    ) : (
-                        <h2>Not found</h2>
-                    )}
+                    <h2>Not found</h2>
                 </motion.div>
-            </div>
+            )}
         </div>
     );
 }

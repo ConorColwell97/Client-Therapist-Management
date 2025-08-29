@@ -10,26 +10,26 @@ import axios from "axios";
 const SessionDashboard = () => {
     const navigate = useNavigate();
     const VITE_URL = import.meta.env.VITE_API_URL;
-    const [therapists, setTherapists] = useState([]);
+    const [sessions, setSessions] = useState([]);
     const [error, setError] = useState("");
 
-    const getAllTherapists = async () => {
+    const getAllSessions = async () => {
         try {
             setError("");
-            const response = await axios.get(`${VITE_URL}/therapists`);
-            setTherapists(response.data);
+            const response = await axios.get(`${VITE_URL}/sessions`);
+            setSessions(response.data);
         } catch (err) {
             setError(err.response?.data?.message || "An error occurred");
         }
     }
 
-    const deleteTherapist = async (name) => {
+    const deleteSession = async (id) => {
         let response;
 
         try {
-            response = await axios.delete(`${VITE_URL}/therapists/name/${encodeURIComponent(name)}`);
-            setTherapists((prev) => {
-                return prev.filter(item => item.Name !== name);
+            response = await axios.delete(`${VITE_URL}/sessions/session/${encodeURIComponent(id)}`);
+            setSessions((prev) => {
+                return prev.filter(item => item.ID !== id);
             });
             setSuccessMessage(response.data.message);
         } catch (err) {
@@ -37,33 +37,33 @@ const SessionDashboard = () => {
         }
     }
 
-    const search = async (name) => {
-        sessionStorage.setItem("session", name);
+    const search = async (id) => {
+        sessionStorage.setItem("sessionID", id);
+        sessionStorage.setItem("session", "id");
         navigate("/SessionDis");
     }
 
     useEffect(() => {
-        getAllTherapists();
+        getAllSessions();
     }, []);
 
     return (
         <div className='container'>
             <NavBar />
             <div className='dashboard'>
-                <h2>Therapists</h2>
-                {therapists.length > 0 ? (
-                    therapists.map((therapist, index) => (
+                <h2>Sessions</h2>
+                {sessions.length > 0 ? (
+                    sessions.map((session, index) => (
                         <motion.div className='display' key={index} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-                            <p>Dr.{therapist.Name}</p>
-                            <p>{therapist.Title}</p>
-                            <p>{therapist.Availability}</p>
+                            <p>Dr.{session.Therapist}</p>
+                            <p>{session.Client}</p>
+                            <p>{session.SessionDate}</p>
 
-                            <button onClick={() => search(therapist.Name)}>{<IoMdCreate color='white'/>} Edit</button>
+                            <button onClick={() => search(session.ID)}>{<IoMdCreate color='white'/>} Edit</button>
                             <button onClick={() => {
-                                alert(`Are you sure you wish to delete ${therapist.Name}?`);
-                                if (therapist.Name !== null) {
-                                    deleteTherapist(therapist.Name);
-                                }
+                                alert(`Are you sure you wish to delete this session?`);
+                                deleteSession(session.ID);
+                                
                             }}>{<IoTrashOutline color='white'/>} Delete</button>
 
                         </motion.div>
