@@ -2,48 +2,30 @@
     display: flex;
     flex: 1;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 30%;
+    margin-bottom: 15em;
 }
 
 .find {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 1rem;
+    gap: 1em;
 }
 
 .enter {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 2em;
     align-items: flex-start;
     background-color: #111822;
-    border-radius: 5rem;
-    padding: 5rem;
-}
-
-.header {
-    color: white;
-}
-
-.dashHeader {
-    color: white;
-    margin-top: 50px;
-    text-decoration-line: underline;
+    border-radius: 5em;
+    padding: 5em;
 }
 
 #selectPage {
-    margin-top: 50px;
+    margin-top: 1em;
     text-decoration-line: underline;
-}
-
-#homeNavbar {
-    border: 2px solid transparent;
-    border-radius: 10px;
-    background-color: #242424;
-    height: 200px;
 }
 
 .navBar {
@@ -52,20 +34,13 @@
     justify-content: space-around;
     border-radius: 2rem;
     min-width: 50%;
-    max-width: 50%;
 }
-
-/* #nav_container {
-    display: flex;
-    flex: 1;
-    justify-content: center;
-} */
 
 .navButtons {
     background: none;
     border: none;
     color: white;
-    padding: 1rem;
+    padding: 1em;
     cursor: pointer;
 }
 
@@ -73,110 +48,46 @@
     opacity: 0.7;
 }
 
-.homeButtons {
-    font-size: xx-large;
-    color: white;
-    background-color: #242424;
-    height: 200px;
-    width: 200px;
-    cursor: pointer;
-}
-
-.buttons {
-    border: 2px solid;
-    border-radius: 10px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    margin-right: 20px;
-    cursor: pointer;
-}
-
-.buttons:hover {
-    border-color: white;
-}
-
-.buttons:active,
 .navButtons:active {
     transform: scale(0.9);
 }
 
-.userInput {
-    margin-top: 50px;
-    border-radius: 10px;
-}
-
-.dropbutton {
-    cursor: pointer;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    flex-direction: column;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.margin {
-    margin-top: 50px;
-}
-
-.column {
-    display: flex;
-    justify-content: space-between;
-    margin-right: 5px;
-    flex-direction: column;
-}
-
 .dashboard {
     display: flex;
-    flex: 1;
+    /* flex: 1; */
     flex-direction: column;
     background-color: #111822;
-    border-radius: 2rem;
-    overflow: scroll;
-    min-width: 50%;
-    margin-top: 8rem;
+    border-radius: 2em;
+    min-width: 30em;
+    margin-top: 8em;
 }
 
 .display {
     display: grid;
     grid-auto-flow: column;
-    grid-auto-columns: 9rem;
+    grid-auto-columns: 9em;
     align-items: center;
-    gap: 3rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
+    gap: 3em;
+    padding-left: 2em;
+    padding-right: 2em;
     border-top: 1px solid #242424;
-    max-height: 5rem;
-    min-height: 5rem;
+    max-height: 5em;
+    min-height: 5em;
 }
 
 .displayContainer {
     display: flex;
     flex-direction: column;
     background-color: #111822;
-    border-radius: 2rem;
+    border-radius: 2em;
     min-width: 30%;
-}
-
-.message {
-    position: absolute;
-    top: 0;
-    left: 0;
 }
 
 .menu {
     display: flex;
     flex-direction: column;
-    gap: 5rem;
-    margin-top: 2rem;
+    gap: 5em;
+    margin-top: 2em;
 }
 
 .inner {
@@ -184,22 +95,12 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem;
-    gap: 2rem;
-}
-
-.top {
-    border-top: 1px solid #242424;
-}
-
-.text {
-    color: white;
-    margin-left: 10px;
-    margin-right: 10px;
+    padding: 2em;
+    gap: 2em;
 }
 
 input {
-    border-radius: 1rem;
+    border-radius: 1em;
 }
 
 button {

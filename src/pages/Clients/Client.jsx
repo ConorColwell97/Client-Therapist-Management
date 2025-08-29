@@ -17,7 +17,6 @@ const Client = () => {
     const [newLocation, setNewLocation] = useState("");
     const [newNumber, setNewNumber] = useState("");
     const [newReg, setNewReg] = useState("");
-    const [checked, setChecked] = useState(false);
 
     const disabled = (newName === "" || newEmail === "" || newLocation === "" || newNumber === "" || newReg === "");
 
@@ -128,8 +127,8 @@ const Client = () => {
                             Monthly
                         </label>
 
-                        <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} disabled={disabled} onClick={addClient}>Finish</button>
-                        <button style={{ backgroundColor: "#1F51FF", width: "10rem", margin: "0 auto" }} onClick={() => setAdd(false)}>Cancel</button>
+                        <button style={{ backgroundColor: "#1F51FF", width: "10em", margin: "0 auto" }} disabled={disabled} onClick={addClient}>Finish</button>
+                        <button style={{ backgroundColor: "#1F51FF", width: "10em", margin: "0 auto" }} onClick={() => setAdd(false)}>Cancel</button>
                     </div>
                 </>
 
